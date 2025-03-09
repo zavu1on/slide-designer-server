@@ -21,4 +21,5 @@ async def init_db():
         async with session.bind.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
             logger.info("Database initialized successfully")
+
         break

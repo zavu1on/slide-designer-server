@@ -1,11 +1,13 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.logger import logger
-from db.base import init_db
+from db.base import init_db, get_db
 from routes.auth import auth_router
 from routes.slide import slide_router
-from websockets.slide import websocket_slide
+from services.user import create_superuser
+from ws.slide import websocket_slide
 
 app = FastAPI()
 
@@ -25,6 +27,7 @@ app.include_router(slide_router)
 async def startup():
     logger.info("Starting FastAPI application...")
     await init_db()
+    await create_superuser()
     logger.info("FastAPI application started successfully")
 
 
