@@ -1,6 +1,10 @@
-from fastapi import APIRouter, Depends
+from os import getcwd
+
+from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
+
+from starlette.responses import FileResponse
 
 from core.security import get_current_user
 from db.base import get_db
@@ -35,3 +39,15 @@ async def delete_slide(
 ):
     success = await slide.delete_slide(db, current_user.id, slide_uuid.uuid)
     return {"message": "Слайд удален"} if success else {"error": "Ошибка удаления"}
+
+
+@slide_router.post("/upload-media")
+async def delete_slide(
+    file: UploadFile = File(...), current_user=Depends(get_current_user)
+):
+    return await slide.upload_media_file(file)
+
+
+@slide_router.get("/media/{file_name}")
+def get_file(file_name: str):
+    return FileResponse(path=getcwd() + "/" + file_name)

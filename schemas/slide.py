@@ -26,3 +26,8 @@ class SlideResponse(BaseModel):
 
 class GetSlideByUUID(BaseModel):
     uuid: UUID4
+
+
+class UploadMediaFileResponse(BaseModel):
+    filename: str
+    url: str

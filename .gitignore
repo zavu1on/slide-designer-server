@@ -173,3 +173,6 @@ cython_debug/
 
 # DB files
 test.sqlite3
+
+# Media files
+media/
